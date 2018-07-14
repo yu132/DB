@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE struts PUBLIC  
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"  
+    "http://struts.apache.org/dtds/struts-2.3.dtd">  
+      
+<struts>  
+    <constant name="struts.action.extension" value="action" />  
+      
+    <package name="s2sh" namespace="/user" extends="struts-default">
+    
+    	<!-- 用户部分 -->
+	    	<!-- 用户登录 -->
+	    	<action name="userLogin" method="login" class="action.userAction.UserLoginAction"/>
+	    	
+	    	<!-- 用户注销 -->
+	    	<action name="userLogout" method="logout" class="action.userAction.UserLogoutAction"/>
+	    	
+	    	<!-- 用户注册 -->
+	    	<action name="userRegister" method="register" class="action.userAction.UserRegisterAction"/>
+	    	
+	    	<!-- 用户修改个人信息 -->
+	    	<action name="userModify" method="modifyInf" class="action.userAction.UserModifyAction"/>
+	    	
+	    	<!-- 用户邮箱验证 -->
+	    	<action name="mailVerification" method="mailVerification" class="action.userAction.MailVerificationAction"/>
+	    	
+	    	<!-- 用户修改密码 -->
+	    	<action name="passwordChangeRequset" method="changePasswordRequest" class="action.userAction.ChangePasswordAction"/>
+	    	<action name="passwordChangeVerification" method="changePasswordVerification" class="action.userAction.ChangePasswordAction"/>
+	    	
+	    	<!-- 用户修改邮箱 -->
+	    	<action name="emailChangeRequset" method="changeEmailRequest" class="action.userAction.ChangeEmailAction"/>
+	    	<action name="emailChangeVerification" method="changeEmailVerification" class="action.userAction.ChangeEmailAction"/>
+	    	<action name="emailChangeWithoutVerification" method="changeEmailWithoutVerification" class="action.userAction.ChangeEmailAction"/>
+	    	
+	    	<!-- 用户添加好友 -->
+	    	<action name="sendFriendInvitation" method="sendFriendInvitation" class="action.friendAction.FriendInvitationSendAction"/>
+	    	<action name="receiveFriendInvitation" method="receiveFriendInvitation" class="action.friendAction.FriendInvitationDealAction"/>
+	    	<action name="refuseFriendInvitation" method="refuseFriendInvitation" class="action.friendAction.FriendInvitationDealAction"/>
+	    	
+	    	<!-- 用户删除好友 -->
+	    	<action name="deleteFriend" method="deleteFriend" class="action.friendAction.FriendDeleteAction"/>
+	
+	    	<!-- 用户向好友发送消息 -->
+	    	<action name="sendFriendMessage" method="sendFriendMessage" class="action.friendAction.FriendMessageSendAction"/>
+	    	
+	    	<!-- 用户获取数据 -->
+	    	<action name="getInvitationData" method="getInvitationData" class="action.dataAction.GetInvitationAction"/>
+	    	<action name="getFriendData" method="getFriendData" class="action.dataAction.GetFriendAction"/>
+	    	<action name="getMessageData" method="getMessageData" class="action.dataAction.GetMessageAction"/>
+	    	<action name="getSelfData" method="getSelfData" class="action.dataAction.GetSelfdataAction"/>
+	    	
+	    	<!-- 用户获取完数据进行已读标记或放弃标记 -->
+	    	<action name="markMessageAsRead" method="markMessageAsRead" class="action.dataAction.DealMessageInSessionAction"/>
+	    	<action name="removeMessageInSession" method="removeMessageInSession" class="action.dataAction.DealMessageInSessionAction"/>
+	    	
+	    	<!-- 用户根据已读标记进行数据迁移 -->
+	    	<action name="changeMessageDataStorageMode" method="changeMessageDataStorageMode" class="action.dataAction.ChangeMessageDataStorageModeAction"/>
+	    <!-- 用户部分 / -->	
+	    	
+    	<!-- 群部分 -->
+    		<!-- 创建群 -->
+    		<action name="createGroup" method="createGroup" class="action.groupAction.GroupCreateAction"/>
+    		<!-- 申请加入群 -->
+    		<action name="sendGroupApplication" method="sendGroupApplication" class="action.groupAction.GroupApplicationSendAction"/>
+    		<action name="receiveGroupApplication" method="receiveGroupApplication" class="action.groupAction.GroupApplicationDealAction"/>
+    		<action name="refuseGroupApplication" method="refuseGroupApplication" class="action.groupAction.GroupApplicationDealAction"/>
+    		<!-- 邀请入群 -->
+    		<action name="sendGroupInvitation" method="sendGroupInvitation" class="action.groupAction.GroupInvitationSendAction"/>
+    		<action name="receiveGroupInvitation" method="receiveGroupInvitation" class="action.groupAction.GroupInvitationDealAction"/>
+    		<action name="refuseGroupInvitation" method="refuseGroupInvitation" class="action.groupAction.GroupInvitationDealAction"/>
+    		<!-- 踢出成员 -->
+    		<action name="kickOutMember" method="kickOutMember" class="action.groupAction.GroupMemberKickOutAction"/>
+    		<!-- 发送群消息 -->
+    		<action name="sendGroupMessage" method="sendGroupMessage" class="action.groupAction.GroupSendMessageAction"/>
+    		<!-- 设置副群主 -->
+    		<action name="setGroupDeputy" method="setGroupDeputy" class="action.groupAction.GroupSetDeputyAction"/>
+    		<!-- 改变副群主 -->
+    		<action name="dismissGroupDeputy" method="setGroupDeputy" class="action.groupAction.GroupSetDeputyAction"/>
+    		
+    		<!-- 设置管理员 -->
+    		<action name="setGroupManager" method="setGroupManager" class="action.groupAction.GroupSetManagerAction"/>
+    		<!-- 撤销管理员 -->
+    		<action name="dismissGroupManager" method="setGroupManager" class="action.groupAction.GroupSetManagerAction"/>
+    		
+    	<!-- 群部分 / -->
+    	
+    	
+    </package>
+      
+</struts>   
