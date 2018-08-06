@@ -24,7 +24,7 @@ import db.entity.Restaurant;
 import db.entity.Voucher;
 import db.util.randomstr.RandomStr;
 
-public class CustomerService {
+public class CustomerServiceImpl {
 	
 	@Resource
 	private OrderDao orderDao;

@@ -2,9 +2,13 @@ package db.service.impl;
 
 import java.util.Map;
 
-public class RestaurantService {
+import db.entity.Restaurant;
 
-	public Map<String,Object> addMenu(){
+public class RestaurantServiceImpl {
+
+	public Map<String,Object> addMenu(String menuName,Double menuPrice,Double menuDiscount,Restaurant restaurant){
+		
+		
 		
 		return null;
 	}
