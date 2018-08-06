@@ -1,42 +1,60 @@
 package db.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-@Entity
-@Table(name="comment_from_ca_to_cu")
+@Entity(name = "comment_from_carrier_to_customer")
 public class CommentFromCarrierToCustomer {
-
-	private Integer carrier_id;
-	private Integer customer_id;
+	
+	@Id
+	@ManyToOne
+	@JoinColumn(name = "carrier_id")
+	private Carrier carrier;
+	
+	@Id
+	@ManyToOne
+	@JoinColumn(name = "customer_id")
+	private Customer customer;
+	
 	private String comment;
 	
-	@Id
-	@Column(name = "carrier_id", length=20)
-	public Integer getCarrier_id() {
-		return carrier_id;
+	private Integer point;
+
+	public Integer getPoint() {
+		return point;
 	}
-	public void setCarrier_id(Integer carrier_id) {
-		this.carrier_id = carrier_id;
+
+	public void setPoint(Integer point) {
+		this.point = point;
 	}
-	
-	@Id
-	@Column(name = "customer_id", length=20)
-	public Integer getCustomer_id() {
-		return customer_id;
+
+	public Carrier getCarrier() {
+		return carrier;
 	}
-	public void setCustomer_id(Integer customer_id) {
-		this.customer_id = customer_id;
+
+	public void setCarrier(Carrier carrier) {
+		this.carrier = carrier;
 	}
-	
-	@Column(name = "comment", length=500)
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
 	public String getComment() {
 		return comment;
 	}
+
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	
+	
+	
 	
 }

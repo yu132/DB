@@ -4,52 +4,83 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.GenericGenerator;
 
-@Entity
-@Table(name="voucher")
+@Entity(name = "voucher")
 public class Voucher {
-	
-	private Integer id;
-	private Integer restaurant_id;
-	private Integer discount_money;
-	private Integer need_to_use;
-	
+
 	@Id
 	@GenericGenerator(name = "generator", strategy = "native")
 	@GeneratedValue(generator = "generator")
-	@Column(name = "id", length=11)
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	@Column(name = "voucher_id")
+	private Long VoucherID;
 	
-	@Column(name = "restaurant_id", length = 11)
-	public Integer getRestaurant_id() {
-		return restaurant_id;
-	}
-	public void setRestaurant_id(Integer restaurant_id) {
-		this.restaurant_id = restaurant_id;
+	@ManyToOne
+	@JoinColumn(name = "restaurant_id")
+	private Restaurant restaurant;
+	
+	@ManyToOne
+	@JoinColumn(name = "customer_id")
+	private Customer customer;
+	
+	@Column(name = "discount_money")
+	private Double discountMoney;
+	
+	@Column(name = "need_to_use")
+	private Double needToUse;
+	
+	@Column(name = "expiration_time")
+	private Long expirationTime;
+
+	public Long getVoucherID() {
+		return VoucherID;
 	}
 
-	@Column(name = "discount_money", length = 20)
-	public Integer getDiscount_money() {
-		return discount_money;
+	public void setVoucherID(Long voucherID) {
+		VoucherID = voucherID;
 	}
-	public void setDiscount_money(Integer discount_money) {
-		this.discount_money = discount_money;
+
+	public Restaurant getRestaurant() {
+		return restaurant;
 	}
-	
-	@Column(name = "need_to_use", length = 20)
-	public Integer getNeed_to_use() {
-		return need_to_use;
+
+	public void setRestaurant(Restaurant restaurant) {
+		this.restaurant = restaurant;
 	}
-	public void setNeed_to_use(Integer need_to_use) {
-		this.need_to_use = need_to_use;
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public Double getDiscountMoney() {
+		return discountMoney;
+	}
+
+	public void setDiscountMoney(Double discountMoney) {
+		this.discountMoney = discountMoney;
+	}
+
+	public Double getNeedToUse() {
+		return needToUse;
+	}
+
+	public void setNeedToUse(Double needToUse) {
+		this.needToUse = needToUse;
+	}
+
+	public Long getExpirationTime() {
+		return expirationTime;
+	}
+
+	public void setExpirationTime(Long expirationTime) {
+		this.expirationTime = expirationTime;
 	}
 	
 }

@@ -4,61 +4,82 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.GenericGenerator;
 
-@Entity
-@Table(name="voucher_activity")
+@Entity(name = "voucher_activity")
 public class VoucherActivity {
 
-	private Integer id;
-	private Integer restaurant_id;
-	private Integer need_pay;
-	private Integer discount_money;
-	private Integer need_to_use;
-	
 	@Id
 	@GenericGenerator(name = "generator", strategy = "native")
 	@GeneratedValue(generator = "generator")
-	@Column(name = "id", length=11)
-	public Integer getId() {
-		return id;
+	@Column(name = "voucher_activity_id")
+	private Long voucherActivityID;
+	
+	@ManyToOne
+	@JoinColumn(name = "restaurant_id")
+	private Restaurant restaurant;
+	
+	@Column(name = "need_pay")
+	private Double needPay;
+	
+	@Column(name = "discount_money")
+	private Double discountMoney;
+	
+	@Column(name = "need_to_use")
+	private Double needToUse;
+	
+	@Column(name = "valid_time")
+	private Long validTime;
+
+	public Long getVoucherActivityID() {
+		return voucherActivityID;
 	}
-	public void setId(Integer id) {
-		this.id = id;
+
+	public void setVoucherActivityID(Long voucherActivityID) {
+		this.voucherActivityID = voucherActivityID;
+	}
+
+	public Restaurant getRestaurant() {
+		return restaurant;
+	}
+
+	public void setRestaurant(Restaurant restaurant) {
+		this.restaurant = restaurant;
+	}
+
+	public Double getNeedPay() {
+		return needPay;
+	}
+
+	public void setNeedPay(Double needPay) {
+		this.needPay = needPay;
+	}
+
+	public Double getDiscountMoney() {
+		return discountMoney;
+	}
+
+	public void setDiscountMoney(Double discountMoney) {
+		this.discountMoney = discountMoney;
+	}
+	public Double getNeedToUse() {
+		return needToUse;
+	}
+
+	public void setNeedToUse(Double needToUse) {
+		this.needToUse = needToUse;
+	}
+
+	public Long getValidTime() {
+		return validTime;
+	}
+
+	public void setValidTime(Long validTime) {
+		this.validTime = validTime;
 	}
 	
-	@Column(name = "restaurant_id", length = 11)
-	public Integer getRestaurant_id() {
-		return restaurant_id;
-	}
-	public void setRestaurant_id(Integer restaurant_id) {
-		this.restaurant_id = restaurant_id;
-	}
-	
-	@Column(name = "need_pay", length = 20)
-	public Integer getNeed_pay() {
-		return need_pay;
-	}
-	public void setNeed_pay(Integer need_pay) {
-		this.need_pay = need_pay;
-	}
-	
-	@Column(name = "discount_money", length = 20)
-	public Integer getDiscount_money() {
-		return discount_money;
-	}
-	public void setDiscount_money(Integer discount_money) {
-		this.discount_money = discount_money;
-	}
-	
-	@Column(name = "need_to_use", length = 20)
-	public Integer getNeed_to_use() {
-		return need_to_use;
-	}
-	public void setNeed_to_use(Integer need_to_use) {
-		this.need_to_use = need_to_use;
-	}
 	
 }

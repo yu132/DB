@@ -1,109 +1,125 @@
 package db.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.GenericGenerator;
 
-@Entity
-@Table(name="order")
+@Entity(name = "order")
 public class Order {
-
-	private Integer id;
-	private Long time;
-	private Integer voucherID;
-	private Integer price;
-	private String customerName;
-	private String customerPhone;
-	private String customerAddress;
-	private Integer restaurantID;
-	private Integer carrierID;
-	private Integer customerID;
 	
 	@Id
 	@GenericGenerator(name = "generator", strategy = "native")
 	@GeneratedValue(generator = "generator")
-	@Column(name = "id", length=11)
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
+	@Column(name = "order_id")
+	private Integer orderID;
 	
-	@Column(name = "time", length = 20)
-	public long getTime() {
-		return time;
-	}
-	public void setTime(long time) {
-		this.time = time;
-	}
+	@Column(name = "order_time")
+	private Long orderTime;
 	
-	@Column(name = "voucher_id", length = 11)
-	public int getVoucherID() {
-		return voucherID;
-	}
-	public void setVoucherID(int voucherID) {
-		this.voucherID = voucherID;
-	}
+	@ManyToOne
+	@JoinColumn(name = "voucher_id")
+	private Voucher voucher;
 	
-	@Column(name = "price", length = 20)
-	public int getPrice() {
-		return price;
-	}
-	public void setPrice(int price) {
-		this.price = price;
-	}
+	@Column(name = "orde_price")
+	private Double orderPrice;
 	
-	@Column(name = "customer_name", length = 20)
-	public String getCustomerName() {
-		return customerName;
-	}
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
-	}
+	@ManyToOne
+	@JoinColumn(name = "restaurant_id")
+	private Restaurant restaurant;
 	
-	@Column(name = "customer_phone", length = 20)
-	public String getCustomerPhone() {
-		return customerPhone;
-	}
-	public void setCustomerPhone(String customerPhone) {
-		this.customerPhone = customerPhone;
-	}
+	@ManyToOne
+	@JoinColumn(name = "customer_receiving_information_id")
+	private CustomerReceivingInformation customerReceivingInformation;
 	
-	@Column(name = "customer_address", length = 50)
-	public String getCustomerAddress() {
-		return customerAddress;
-	}
-	public void setCustomerAddress(String customerAddress) {
-		this.customerAddress = customerAddress;
-	}
+	@ManyToOne
+	@JoinColumn(name = "carrier_id")
+	private Carrier carrier;
 	
-	@Column(name = "restaurant_id", length = 11)
-	public int getRestaurantID() {
-		return restaurantID;
-	}
-	public void setRestaurantID(int restaurantID) {
-		this.restaurantID = restaurantID;
-	}
+	@Column(name = "order_state",length=20)
+	private String orderState;
 	
-	@Column(name = "carrier_id", length = 11)
-	public int getCarrierID() {
-		return carrierID;
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	private List<Menu> dishes;
+
+	public String getOrderState() {
+		return orderState;
 	}
-	public void setCarrierID(int carrierID) {
-		this.carrierID = carrierID;
+
+	public void setOrderState(String orderState) {
+		this.orderState = orderState;
 	}
-	
-	@Column(name = "customer_id", length = 11)
-	public int getCustomerID() {
-		return customerID;
+
+	public Integer getOrderID() {
+		return orderID;
 	}
-	public void setCustomerID(int customerID) {
-		this.customerID = customerID;
+
+	public void setOrderID(Integer orderID) {
+		this.orderID = orderID;
+	}
+
+	public Long getOrderTime() {
+		return orderTime;
+	}
+
+	public void setOrderTime(Long orderTime) {
+		this.orderTime = orderTime;
+	}
+
+	public Voucher getVoucher() {
+		return voucher;
+	}
+
+	public void setVoucher(Voucher voucher) {
+		this.voucher = voucher;
+	}
+
+	public Double getOrderPrice() {
+		return orderPrice;
+	}
+
+	public void setOrderPrice(Double orderPrice) {
+		this.orderPrice = orderPrice;
+	}
+
+	public CustomerReceivingInformation getCustomerReceivingInformation() {
+		return customerReceivingInformation;
+	}
+
+	public void setCustomerReceivingInformation(CustomerReceivingInformation customerReceivingInformation) {
+		this.customerReceivingInformation = customerReceivingInformation;
+	}
+
+	public Restaurant getRestaurant() {
+		return restaurant;
+	}
+
+	public void setRestaurant(Restaurant restaurant) {
+		this.restaurant = restaurant;
+	}
+
+	public Carrier getCarrier() {
+		return carrier;
+	}
+
+	public void setCarrier(Carrier carrier) {
+		this.carrier = carrier;
+	}
+
+	public List<Menu> getDishes() {
+		return dishes;
+	}
+
+	public void setDishes(List<Menu> dishes) {
+		this.dishes = dishes;
 	}
 	
 	

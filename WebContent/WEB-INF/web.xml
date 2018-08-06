@@ -2,7 +2,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
   <display-name>S2SH</display-name>
   <welcome-file-list>
-    <welcome-file>welcome.jsp</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
   
   <!-- 添加对spring的支持 -->  
@@ -11,15 +11,20 @@
     <param-value>classpath:applicationContext.xml</param-value>  
   </context-param>  
     
-    <!-- 定义Spring监听器，加载Spring  -->
+  <!--定义Spring监听器，加载Spring -->  
     <listener>  
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>  
-    </listener>  
+    </listener>   
+    
+     <!--载入自定义配置文件 -->
+      <listener>  
+        <listener-class>db.configuration.Configuration.ConfigurationLoader</listener-class>  
+    </listener> 
       
   <!-- 添加对struts2的支持 -->  
   <filter>  
     <filter-name>struts2</filter-name>  
-    <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>  
+    <filter-class>org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter</filter-class>  
   </filter>   
   
   <filter-mapping>  

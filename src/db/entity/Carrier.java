@@ -4,52 +4,72 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.GenericGenerator;
 
-@Entity
-@Table(name="carrier")
+@Entity(name = "carrier")
 public class Carrier {
 
-	private Integer id;
-	private String name;
-	private String statue;
-	private String phone;
-	
 	@Id
 	@GenericGenerator(name = "generator", strategy = "native")
 	@GeneratedValue(generator = "generator")
-	@Column(name = "id", length=11)
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	@Column(name = "carrier_id")
+	private Long carrierID;
 	
-	@Column(name = "name", length = 20)
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
+	@Column(name = "carrier_id",length = 30)
+	private String carrierName;
 	
-	@Column(name = "statue", length = 20)
-	public String getStatue() {
-		return statue;
-	}
-	public void setStatue(String statue) {
-		this.statue = statue;
-	}
+	@Column(name = "carrier_state" ,length = 10)
+	private String carrierState;
 	
-	@Column(name = "phone", length = 20)
-	public String getPhone() {
-		return phone;
+	@Column(name = "carrier_state" ,length = 10)
+	private String carrierPhone;
+	
+	@OneToOne
+	@JoinColumn(name = "carrier_account_information")
+	private AccountInformation carrierAccountInformation;
+
+
+	public Long getCarrierID() {
+		return carrierID;
 	}
-	public void setPhone(String phone) {
-		this.phone = phone;
+
+	public void setCarrierID(Long carrierID) {
+		this.carrierID = carrierID;
+	}
+
+	public String getCarrierName() {
+		return carrierName;
+	}
+
+	public void setCarrierName(String carrierName) {
+		this.carrierName = carrierName;
+	}
+
+	public String getCarrierState() {
+		return carrierState;
+	}
+
+	public void setCarrierState(String carrierState) {
+		this.carrierState = carrierState;
+	}
+
+	public String getCarrierPhone() {
+		return carrierPhone;
+	}
+
+	public void setCarrierPhone(String carrierPhone) {
+		this.carrierPhone = carrierPhone;
+	}
+
+	public AccountInformation getCarrierAccountInformation() {
+		return carrierAccountInformation;
+	}
+
+	public void setCarrierAccountInformation(AccountInformation carrierAccountInformation) {
+		this.carrierAccountInformation = carrierAccountInformation;
 	}
 	
 	

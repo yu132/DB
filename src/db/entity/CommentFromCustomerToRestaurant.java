@@ -1,42 +1,59 @@
 package db.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-@Entity
-@Table(name="comment_from_cu_to_r")
+@Entity(name = "comment_from_customer_to_restaurant")
 public class CommentFromCustomerToRestaurant {
 	
-	private Integer restaurant_id;
-	private Integer customer_id;
+	@Id
+	@ManyToOne
+	@JoinColumn(name = "restaurant_id")
+	private Restaurant restaurant;
+	
+	@Id
+	@ManyToOne
+	@JoinColumn(name = "customer_id")
+	private Customer customer;
+	
 	private String comment;
-	
-	@Id
-	@Column(name = "restaurant_id", length=20)
-	public Integer getRestaurant_id() {
-		return restaurant_id;
+
+	private Integer point;
+
+	public Integer getPoint() {
+		return point;
 	}
-	public void setRestaurant_id(Integer restaurant_id) {
-		this.restaurant_id = restaurant_id;
-	}
-	
-	@Id
-	@Column(name = "customer_id", length=20)
-	public Integer getCustomer_id() {
-		return customer_id;
-	}
-	public void setCustomer_id(Integer customer_id) {
-		this.customer_id = customer_id;
+
+	public void setPoint(Integer point) {
+		this.point = point;
 	}
 	
-	@Column(name = "comment", length=500)
+	public Restaurant getRestaurant() {
+		return restaurant;
+	}
+
+	public void setRestaurant(Restaurant restaurant) {
+		this.restaurant = restaurant;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
 	public String getComment() {
 		return comment;
 	}
+
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	
+	
 	
 }

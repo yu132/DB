@@ -1,39 +1,67 @@
 package db.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.GenericGenerator;
 
-@Entity
-@Table(name="customer")
+@Entity(name = "customer")
 public class Customer {
 
-	private Integer id;
-	private String phone;
-	
 	@Id
 	@GenericGenerator(name = "generator", strategy = "native")
 	@GeneratedValue(generator = "generator")
-	@Column(name = "id", length=11)
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	@Column(name = "customer_id")
+	private Long customerID;
 	
-	@Column(name = "phone", length = 20)
-	public String getPhone() {
-		return phone;
-	}
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+	@Column(name = "customer_phone",length = 30)
+	private String customerPhone;
 	
-	
+	@OneToOne
+	@JoinColumn(name = "customer_accoun_information")
+	private AccountInformation customerAccountInformation;
+
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	private List<CustomerReceivingInformation> customerReceivingInformation;
+
+	public Long getCustomerID() {
+		return customerID;
+	}
+
+	public void setCustomerID(Long customerID) {
+		this.customerID = customerID;
+	}
+
+	public String getCustomerPhone() {
+		return customerPhone;
+	}
+
+	public void setCustomerPhone(String customerPhone) {
+		this.customerPhone = customerPhone;
+	}
+
+	public AccountInformation getCustomerAccountInformation() {
+		return customerAccountInformation;
+	}
+
+	public void setCustomerAccountInformation(AccountInformation customerAccountInformation) {
+		this.customerAccountInformation = customerAccountInformation;
+	}
+
+	public List<CustomerReceivingInformation> getCustomerReceivingInformation() {
+		return customerReceivingInformation;
+	}
+
+	public void setCustomerReceivingInformation(List<CustomerReceivingInformation> customerReceivingInformation) {
+		this.customerReceivingInformation = customerReceivingInformation;
+	}
 	
 }
