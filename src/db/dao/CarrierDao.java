@@ -13,7 +13,7 @@ public class CarrierDao {
 	private BaseDao<Carrier> baseDao;
 	
 	public Carrier getCarrierByUsername(String username) {
-		return baseDao.get("select c from Carrier c where c.carrierAccountInformation.username=?", new Object[] {username}, Carrier.class);
+		return baseDao.get("select c from Carrier c where c.carrierAccountInformation.username=?0", new Object[] {username}, Carrier.class);
 	}
 	
 	public void saveCarrier(Carrier carrier) {

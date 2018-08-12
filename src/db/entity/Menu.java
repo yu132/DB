@@ -6,10 +6,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-@Entity(name = "menu")
+@Entity
+@Table(name = "menu")
 public class Menu {
 
 	@Id
@@ -30,7 +32,6 @@ public class Menu {
 	@ManyToOne
 	@JoinColumn(name = "restaurant_id")
 	private Restaurant restaurant;
-
 
 	public Long getMenuID() {
 		return menuID;

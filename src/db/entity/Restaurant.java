@@ -8,12 +8,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-@Entity(name = "restaurant")
+@Entity
+@Table(name = "restaurant")
 public class Restaurant {
 
 	@Id
@@ -31,20 +33,20 @@ public class Restaurant {
 	@Column(name = "restaurant_address")
 	private String restaurantAddress;
 	
-	@Column(name = "restaurant_phone" ,length = 20)
+	@Column(name = "restaurant_phone" ,length = 30)
 	private String restaurantPhone;
 	
-	@OneToOne
+	@OneToOne(cascade= {CascadeType.ALL})
 	@JoinColumn(name = "account_information_id")
-	private AccountInformation accountInformation;
+	private AccountInformation restaurantAccountInformation;
 	
-	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToMany(cascade = {CascadeType.ALL})
 	private List<Menu> menus;
 	
-	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToMany(cascade = {CascadeType.ALL})
 	private List<VoucherActivity> voucherActivities;
 	
-	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToMany(cascade = {CascadeType.ALL})
 	private List<RequiringDiscount> requiringDiscounts;
 
 	public Long getRestaurantID() {
@@ -87,12 +89,12 @@ public class Restaurant {
 		this.restaurantPhone = restaurantPhone;
 	}
 
-	public AccountInformation getAccountInformation() {
-		return accountInformation;
+	public AccountInformation getRestaurantAccountInformation() {
+		return restaurantAccountInformation;
 	}
 
-	public void setAccountInformation(AccountInformation accountInformation) {
-		this.accountInformation = accountInformation;
+	public void setRestaurantAccountInformation(AccountInformation restaurantAccountInformation) {
+		this.restaurantAccountInformation = restaurantAccountInformation;
 	}
 
 	public List<Menu> getMenus() {

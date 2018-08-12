@@ -1,15 +1,18 @@
 package db.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-@Entity(name = "customer_receiving_information")
+@Entity
+@Table(name = "customer_receiving_information")
 public class CustomerReceivingInformation {
 	
 	@Id
@@ -18,14 +21,14 @@ public class CustomerReceivingInformation {
 	@Column(name = "customer_receiving_information_id")
 	private Long customerReceivingInformationID;
 	
-	@ManyToOne
+	@ManyToOne(cascade= {CascadeType.ALL})
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
 	
-	@Column(name = "customer_name")
+	@Column(name = "customer_name",length = 30)
 	private String customerName;
 	
-	@Column(name = "customer_phone")
+	@Column(name = "customer_phone",length = 30)
 	private String customerPhone;
 	
 	@Column(name = "customer_address")

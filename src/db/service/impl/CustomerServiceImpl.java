@@ -6,6 +6,9 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import db.dao.AccountInformationDao;
 import db.dao.CarrierDao;
 import db.dao.CommentFromCustomerToCarrierDao;
@@ -22,9 +25,14 @@ import db.entity.CustomerReceivingInformation;
 import db.entity.Order;
 import db.entity.Restaurant;
 import db.entity.Voucher;
+import db.service.CustomerService;
+import db.service.UserService;
 import db.util.randomstr.RandomStr;
+import db.util.sendEmail.EmailSender;
 
-public class CustomerServiceImpl {
+@Transactional
+@Service("customerService")
+public class CustomerServiceImpl implements CustomerService {
 	
 	@Resource
 	private OrderDao orderDao;
@@ -33,7 +41,7 @@ public class CustomerServiceImpl {
 	private RestaurantDao restaurantDao;
 	
 	@Resource
-	private UserServiceImpl userServiceImpl;
+	private UserService userServiceImpl;
 	
 	@Resource
 	private CustomerDao customerDao;
@@ -56,12 +64,16 @@ public class CustomerServiceImpl {
 	@Resource
 	private CustomerReceivingInformationDao customerReceivingInformationDao;
 	
-	public Map<String,Object> getRestaurantInformation(String username,String restaurantName){
+	/* (non-Javadoc)
+	 * @see db.service.impl.CustomerService#getRestaurantInformation(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public Map<String,Object> getRestaurantInformation(Customer customer,String restaurantName){
 		Map<String,Object> result=new HashMap<>();
 		
-		if(username==null) {
+		if(customer==null) {
 			result.put("Result", "Error");
-			result.put("Reason", "Username is null");
+			result.put("Reason", "Customer is null");
 			return result;	
 		}if(restaurantName==null) {
 			result.put("Result", "Error");
@@ -69,7 +81,7 @@ public class CustomerServiceImpl {
 			return result;	
 		}
 		
-		if(!userServiceImpl.checkAccountActivationStateByUsername(username)) {
+		if(!userServiceImpl.checkAccountActivationStateByAccountInformation(customer.getCustomerAccountInformation())) {
 			result.put("Result", "Error");
 			result.put("Reason", "Account is not activated");
 			return result;
@@ -82,11 +94,16 @@ public class CustomerServiceImpl {
 		return result;
 	}
 	
-	public Map<String,Object> getRecommendRestaurant(String username,String userLocation){
-	Map<String,Object> result=new HashMap<>();
-		if(username==null) {
+	/* (non-Javadoc)
+	 * @see db.service.impl.CustomerService#getRecommendRestaurant(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public Map<String,Object> getRecommendRestaurant(Customer customer,String userLocation){
+		Map<String,Object> result=new HashMap<>();
+		
+		if(customer==null) {
 			result.put("Result", "Error");
-			result.put("Reason", "Username is null");
+			result.put("Reason", "Customer is null");
 			return result;	
 		}if(userLocation==null) {
 			result.put("Result", "Error");
@@ -94,7 +111,7 @@ public class CustomerServiceImpl {
 			return result;	
 		}
 		
-		if(!userServiceImpl.checkAccountActivationStateByUsername(username)) {
+		if(!userServiceImpl.checkAccountActivationStateByAccountInformation(customer.getCustomerAccountInformation())) {
 			result.put("Result", "Error");
 			result.put("Reason", "Account is not activated");
 			return result;
@@ -105,12 +122,16 @@ public class CustomerServiceImpl {
 		return result;
 	}
 	
-	public Map<String,Object> giveCommentToCarrier(String username,String carrierUsername,String comment,Integer point){
+	/* (non-Javadoc)
+	 * @see db.service.impl.CustomerService#giveCommentToCarrier(java.lang.String, java.lang.String, java.lang.String, java.lang.Integer)
+	 */
+	@Override
+	public Map<String,Object> giveCommentToCarrier(Customer customer,String carrierUsername,String comment,Integer point){
 		Map<String,Object> result=new HashMap<>();
 		
-		if(username==null) {
+		if(customer==null) {
 			result.put("Result", "Error");
-			result.put("Reason", "Username is null");
+			result.put("Reason", "Customer is null");
 			return result;
 		}if(carrierUsername==null) {
 			result.put("Result", "Error");
@@ -126,14 +147,14 @@ public class CustomerServiceImpl {
 			return result;
 		}
 		
-		if(!userServiceImpl.checkAccountActivationStateByUsername(username)) {
+		if(!userServiceImpl.checkAccountActivationStateByAccountInformation(customer.getCustomerAccountInformation())) {
 			result.put("Result", "Error");
 			result.put("Reason", "Account is not activated");
 			return result;
 		}
 		
 		//加上只有接过单才能给评论的限制
-		List<Order> orderlist=orderDao.getOrderByCarrierUsernameAndCustomerUsername(carrierUsername, username);
+		List<Order> orderlist=orderDao.getOrderByCarrierUsernameAndCustomerUsername(carrierUsername, customer.getCustomerAccountInformation().getUsername());
 		
 		if(orderlist.isEmpty()) {
 			result.put("Result", "Error");
@@ -149,14 +170,6 @@ public class CustomerServiceImpl {
 			return result;
 		}
 		
-		Customer customer=customerDao.getCustomerByUsername(username);
-		
-		if(customer==null) {
-			result.put("Result", "Error");
-			result.put("Reason", "Username is incorrect");
-			return result;
-		}
-	
 		commentFromCustomerToCarrierDao.addCommentFromCustomerToCarrier(customer,carrier, comment, point);
 	
 		result.put("Result", "Success");
@@ -164,12 +177,16 @@ public class CustomerServiceImpl {
 		return result;
 	}
 	
-	public Map<String,Object> giveCommentToRestaurant(String username,String restaurantUsername,String comment,Integer point){
+	/* (non-Javadoc)
+	 * @see db.service.impl.CustomerService#giveCommentToRestaurant(java.lang.String, java.lang.String, java.lang.String, java.lang.Integer)
+	 */
+	@Override
+	public Map<String,Object> giveCommentToRestaurant(Customer customer,String restaurantUsername,String comment,Integer point){
 		Map<String,Object> result=new HashMap<>();
 		
-		if(username==null) {
+		if(customer==null) {
 			result.put("Result", "Error");
-			result.put("Reason", "Username is null");
+			result.put("Reason", "Customer is null");
 			return result;
 		}if(restaurantUsername==null) {
 			result.put("Result", "Error");
@@ -185,14 +202,14 @@ public class CustomerServiceImpl {
 			return result;
 		}
 		
-		if(!userServiceImpl.checkAccountActivationStateByUsername(username)) {
+		if(!userServiceImpl.checkAccountActivationStateByAccountInformation(customer.getCustomerAccountInformation())) {
 			result.put("Result", "Error");
 			result.put("Reason", "Account is not activated");
 			return result;
 		}
 		
 		//加上只有接过单才能给评论的限制
-		List<Order> orderlist=orderDao.getOrderByRestaurantUsernameAndCustomerUsername(restaurantUsername, username);
+		List<Order> orderlist=orderDao.getOrderByRestaurantUsernameAndCustomerUsername(restaurantUsername, customer.getCustomerAccountInformation().getUsername());
 		
 		if(orderlist.isEmpty()) {
 			result.put("Result", "Error");
@@ -208,14 +225,6 @@ public class CustomerServiceImpl {
 			return result;
 		}
 		
-		Customer customer=customerDao.getCustomerByUsername(username);
-		
-		if(customer==null) {
-			result.put("Result", "Error");
-			result.put("Reason", "Username is incorrect");
-			return result;
-		}
-	
 		commentFromCustomerToRestaurantDao.addCommentFromCustomerToRestaurant(customer,restaurant, comment, point);
 	
 		result.put("Result", "Success");
@@ -223,16 +232,17 @@ public class CustomerServiceImpl {
 		return result;
 	}
 	
-	public Map<String,Object> placeOrder(Long time,Long voucherID,Double orderPrice,Long restaurantID,Long customerReceivingInformationID){
+	//缺少菜，很明显
+	/* (non-Javadoc)
+	 * @see db.service.impl.CustomerService#placeOrder(java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.util.List)
+	 */
+	@Override
+	public Map<String,Object> placeOrder(Customer customer,Long time,Long voucherID,Long restaurantID,Long customerReceivingInformationID,List<String> dishesID){
 		Map<String,Object> result=new HashMap<>();
 		
 		if(time==null) {
 			result.put("Result", "Error");
 			result.put("Reason", "Time is null");
-			return result;
-		}if(orderPrice==null) {
-			result.put("Result", "Error");
-			result.put("Reason", "OrderPrice is null");
 			return result;
 		}if(restaurantID==null) {
 			result.put("Result", "Error");
@@ -246,6 +256,20 @@ public class CustomerServiceImpl {
 		
 		Order order=new Order();
 		
+		CustomerReceivingInformation customerReceivingInformation=customerReceivingInformationDao.getCustomerReceivingInformationById(customerReceivingInformationID);
+		
+		if(customerReceivingInformation==null) {
+			result.put("Result", "Error");
+			result.put("Reason", "CustomerReceivingInformationID is incorrect");
+			return result;
+		}
+		
+		if(!userServiceImpl.checkAccountActivationStateByUsername(customerReceivingInformation.getCustomer().getCustomerAccountInformation().getUsername())) {
+			result.put("Result", "Error");
+			result.put("Reason", "Account is not activated");
+			return result;
+		}
+		
 		Voucher voucher=null;
 		
 		if(voucherID!=null) {
@@ -253,6 +277,11 @@ public class CustomerServiceImpl {
 			if(voucher==null) {
 				result.put("Result", "Error");
 				result.put("Reason", "VoucherID is incorrect");
+				return result;
+			}
+			if(!voucher.getCustomer().getCustomerAccountInformation().getUsername().equals(customerReceivingInformation.getCustomer().getCustomerAccountInformation().getUsername())) {
+				result.put("Result", "Error");
+				result.put("Reason", "Voucher is not belong to this account");
 				return result;
 			}
 		}
@@ -265,13 +294,8 @@ public class CustomerServiceImpl {
 			return result;
 		}
 		
-		CustomerReceivingInformation customerReceivingInformation=customerReceivingInformationDao.getCustomerReceivingInformationById(customerReceivingInformationID);
-		
-		if(customerReceivingInformation==null) {
-			result.put("Result", "Error");
-			result.put("Reason", "CustomerReceivingInformationID is incorrect");
-			return result;
-		}
+		//计算订单价格
+		Double orderPrice=0.0;
 		
 		order.setOrderTime(time);
 		order.setVoucher(voucher);
@@ -279,13 +303,18 @@ public class CustomerServiceImpl {
 		order.setRestaurant(restaurant);
 		order.setCustomerReceivingInformation(customerReceivingInformation);
 		order.setCarrier(null);
-		order.setOrderState("Need carrier");
+		order.setOrderState("Need pay");
+		
+		orderDao.saveOrder(order);
 		
 		result.put("Result", "Success");
-		
 		return result;
 	}
 	
+	/* (non-Javadoc)
+	 * @see db.service.impl.CustomerService#register(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
 	public Map<String,Object> register(String customerPhone,String username,String password,String nickname,String eMailAddress){
 		
 		Map<String,Object> result=new HashMap<>();
@@ -331,8 +360,6 @@ public class CustomerServiceImpl {
 		accountInformation.setActivationState("no");
 		accountInformation.setAccountBalance(0.0);
 		
-		accountInformationDao.saveAccountInformation(accountInformation);
-		
 		Customer customer=new Customer();
 		
 		customer.setCustomerPhone(customerPhone);
@@ -340,16 +367,26 @@ public class CustomerServiceImpl {
 		
 		customerDao.saveCustomer(customer);
 		
+		if(!EmailSender.sendActivationEmail(username, activationCode, eMailAddress)){
+			result.put("Result", "SuccessWithError");
+			result.put("Reason", "Email send error");
+			return result;
+		}
+		
 		result.put("Result", "Success");
 		return result;
 	}
 	
-	public Map<String,Object> addCustomerReceivingInformation(String username,String customerName,String customerPhone,String customerAddress){
+	/* (non-Javadoc)
+	 * @see db.service.impl.CustomerService#addCustomerReceivingInformation(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public Map<String,Object> addCustomerReceivingInformation(Customer customer,String customerName,String customerPhone,String customerAddress){
 		Map<String,Object> result=new HashMap<>();
 		
-		if(username==null) {
+		if(customer==null) {
 			result.put("Result", "Error");
-			result.put("Reason", "Username is null");
+			result.put("Reason", "Customer is null");
 			return result;
 		}if(customerName==null) {
 			result.put("Result", "Error");
@@ -365,7 +402,11 @@ public class CustomerServiceImpl {
 			return result;
 		}
 		
-		Customer customer=customerDao.getCustomerByUsername(username);
+		if(!userServiceImpl.checkAccountActivationStateByAccountInformation(customer.getCustomerAccountInformation())) {
+			result.put("Result", "Error");
+			result.put("Reason", "Account is not activated");
+			return result;
+		}
 		
 		CustomerReceivingInformation customerReceivingInformation=new CustomerReceivingInformation();
 		
@@ -376,15 +417,19 @@ public class CustomerServiceImpl {
 
 		customerReceivingInformationDao.saveCustomerReceivingInformation(customerReceivingInformation);
 		
-		customer.getCustomerReceivingInformation().add(customerReceivingInformation);
+	//	customer.getCustomerReceivingInformation().add(customerReceivingInformation);
 		
-		customerDao.saveOrUpdateCustomer(customer);
+	//	customerDao.saveOrUpdateCustomer(customer);
 		
 		result.put("Result", "Success");
 		return result;
 	}
 	
-	public Map<String,Object> deleteCustomerReceivingInformation(){
+	/* (non-Javadoc)
+	 * @see db.service.impl.CustomerService#deleteCustomerReceivingInformation()
+	 */
+	@Override
+	public Map<String,Object> deleteCustomerReceivingInformation(Customer customer,Long customerReceivingInformationID){
 		
 		
 		return null;

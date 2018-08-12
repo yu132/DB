@@ -16,8 +16,12 @@ public class AccountInformationDao {
 		baseDao.save(accountInformation);
 	}
 	
+	public void saveOrUpdateAccountInformation(AccountInformation accountInformation) {
+		baseDao.saveOrUpdate(accountInformation);
+	}
+	
 	public AccountInformation getAccountInformationByUsername(String username) {
-		return baseDao.get("select a from AccountInformation a where a.username=?", new Object[] {username}, AccountInformation.class);
+		return baseDao.get("select a from AccountInformation a where a.username=?0", new Object[] {username}, AccountInformation.class);
 	}
 	
 }

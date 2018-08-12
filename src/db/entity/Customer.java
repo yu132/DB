@@ -10,10 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-@Entity(name = "customer")
+@Entity
+@Table(name = "customer")
 public class Customer {
 
 	@Id
@@ -25,11 +27,11 @@ public class Customer {
 	@Column(name = "customer_phone",length = 30)
 	private String customerPhone;
 	
-	@OneToOne
+	@OneToOne(cascade= {CascadeType.ALL})
 	@JoinColumn(name = "customer_accoun_information")
 	private AccountInformation customerAccountInformation;
 
-	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToMany(cascade= {CascadeType.ALL})
 	private List<CustomerReceivingInformation> customerReceivingInformation;
 
 	public Long getCustomerID() {

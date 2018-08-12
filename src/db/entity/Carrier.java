@@ -1,15 +1,18 @@
 package db.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-@Entity(name = "carrier")
+@Entity
+@Table(name = "carrier")
 public class Carrier {
 
 	@Id
@@ -18,16 +21,16 @@ public class Carrier {
 	@Column(name = "carrier_id")
 	private Long carrierID;
 	
-	@Column(name = "carrier_id",length = 30)
+	@Column(name = "carrier_name",length = 30)
 	private String carrierName;
 	
 	@Column(name = "carrier_state" ,length = 10)
 	private String carrierState;
 	
-	@Column(name = "carrier_state" ,length = 10)
+	@Column(name = "carrier_phone" ,length = 30)
 	private String carrierPhone;
 	
-	@OneToOne
+	@OneToOne(cascade= {CascadeType.ALL})
 	@JoinColumn(name = "carrier_account_information")
 	private AccountInformation carrierAccountInformation;
 

@@ -9,7 +9,7 @@
     <package name="add" extends="struts-default">
     
     	<action name="add" 
-         	class="action.AddAction" 
+         	class="db.test.TestAction" 
          	method="execute">
          	<result name="success">/success.jsp</result>
          	<result name="error">/error.jsp</result>

@@ -1,12 +1,18 @@
 package db.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-@Entity(name = "comment_from_customer_to_restaurant")
-public class CommentFromCustomerToRestaurant {
+@Entity
+@Table(name = "comment_from_customer_to_restaurant")
+public class CommentFromCustomerToRestaurant implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@ManyToOne

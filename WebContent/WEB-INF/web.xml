@@ -18,7 +18,7 @@
     
      <!--载入自定义配置文件 -->
       <listener>  
-        <listener-class>db.configuration.Configuration.ConfigurationLoader</listener-class>  
+        <listener-class>db.configuration.Configuration</listener-class>  
     </listener> 
       
   <!-- 添加对struts2的支持 -->  

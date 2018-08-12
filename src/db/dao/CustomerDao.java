@@ -13,7 +13,7 @@ public class CustomerDao {
 	private BaseDao<Customer> baseDao;
 	
 	public Customer getCustomerByUsername(String username) {
-		return baseDao.get("select c from Customer c where c.carrierAccountInformation.username=?", new Object[] {username}, Customer.class);
+		return baseDao.get("select c from Customer c where c.customerAccountInformation.username=?0", new Object[] {username}, Customer.class);
 	}
 	
 	public void saveCustomer(Customer customer) {

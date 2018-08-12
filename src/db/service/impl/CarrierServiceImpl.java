@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import db.dao.AccountInformationDao;
 import db.dao.CarrierDao;
@@ -17,11 +18,14 @@ import db.entity.AccountInformation;
 import db.entity.Carrier;
 import db.entity.Customer;
 import db.entity.Order;
+import db.service.CarrierService;
+import db.service.UserService;
 import db.util.randomstr.RandomStr;
 import db.util.sendEmail.EmailSender;
 
+@Transactional
 @Service("carrierService")
-public class CarrierServiceImpl {
+public class CarrierServiceImpl implements CarrierService {
 	
 	@Resource
 	private OrderDao orderDao;
@@ -39,35 +43,43 @@ public class CarrierServiceImpl {
 	private	AccountInformationDao accountInformationDao;
 	
 	@Resource
-	private UserServiceImpl userServiceImpl;
+	private UserService userServiceImpl;
 	
-	public Map<String,Object> getOrder(String username){
+	/* (non-Javadoc)
+	 * @see db.service.impl.CarrierService#getOrder(java.lang.String)
+	 */
+	@Override
+	public Map<String,Object> getOrder(Carrier carrier){
 		Map<String,Object> result=new HashMap<>();
 		
-		if(username==null) {
+		if(carrier==null) {
 			result.put("Result", "Error");
-			result.put("Reason", "Username is null");
+			result.put("Reason", "Carrier is null");
 			return result;	
 		}
 		
-		if(!userServiceImpl.checkAccountActivationStateByUsername(username)) {
+		if(!userServiceImpl.checkAccountActivationStateByAccountInformation(carrier.getCarrierAccountInformation())) {
 			result.put("Result", "Error");
 			result.put("Reason", "Account is not activated");
 			return result;
 		}
 		
 		result.put("Result", "Success");
-		result.put("ResultList", orderDao.getOrderByCarrierUsername(username));
+		result.put("ResultList", orderDao.getOrderByCarrierUsername(carrier.getCarrierAccountInformation().getUsername()));
 		
 		return result;
 	};
 	
-	public Map<String,Object> giveCommentToCustomer(String username,String customerUsername,String comment,Integer point){
+	/* (non-Javadoc)
+	 * @see db.service.impl.CarrierService#giveCommentToCustomer(java.lang.String, java.lang.String, java.lang.String, java.lang.Integer)
+	 */
+	@Override
+	public Map<String,Object> giveCommentToCustomer(Carrier carrier,String customerUsername,String comment,Integer point){
 		Map<String,Object> result=new HashMap<>();
 		
-		if(username==null) {
+		if(carrier==null) {
 			result.put("Result", "Error");
-			result.put("Reason", "Username is null");
+			result.put("Reason", "Carrier is null");
 			return result;
 		}if(customerUsername==null) {
 			result.put("Result", "Error");
@@ -83,26 +95,12 @@ public class CarrierServiceImpl {
 			return result;
 		}
 		
-		if(!userServiceImpl.checkAccountActivationStateByUsername(username)) {
-			result.put("Result", "Error");
-			result.put("Reason", "Account is not activated");
-			return result;
-		}
-		
 		//加上只有接过单才能给评论的限制
-		List<Order> orderlist=orderDao.getOrderByCarrierUsernameAndCustomerUsername(username, customerUsername);
+		List<Order> orderlist=orderDao.getOrderByCarrierUsernameAndCustomerUsername(carrier.getCarrierAccountInformation().getUsername(), customerUsername);
 		
 		if(orderlist.isEmpty()) {
 			result.put("Result", "Error");
 			result.put("Reason", "This Account do not have permission to comment on this customer");
-			return result;
-		}
-		
-		Carrier carrier=carrierDao.getCarrierByUsername(username);
-		
-		if(carrier==null) {
-			result.put("Result", "Error");
-			result.put("Reason", "Username is incorrect");
 			return result;
 		}
 		
@@ -121,6 +119,10 @@ public class CarrierServiceImpl {
 		return result;
 	};
 	
+	/* (non-Javadoc)
+	 * @see db.service.impl.CarrierService#register(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
 	public Map<String,Object> register(String name,String phone,String username,String password,String nickname,String eMailAddress){
 		
 		Map<String,Object> result=new HashMap<>();
@@ -170,8 +172,6 @@ public class CarrierServiceImpl {
 		accountInformation.setActivationState("no");
 		accountInformation.setAccountBalance(0.0);
 		
-		accountInformationDao.saveAccountInformation(accountInformation);
-		
 		Carrier carrier=new Carrier();
 		
 		carrier.setCarrierName(name);
@@ -191,22 +191,24 @@ public class CarrierServiceImpl {
 		return result;
 	};
 	
-	public Map<String,Object> start(String username){
+	/* (non-Javadoc)
+	 * @see db.service.impl.CarrierService#start(java.lang.String)
+	 */
+	@Override
+	public Map<String,Object> start(Carrier carrier){
 		Map<String,Object> result=new HashMap<>();
 		
-		if(username==null) {
+		if(carrier==null) {
 			result.put("Result", "Error");
-			result.put("Reason", "Username is null");
+			result.put("Reason", "Carrier is null");
 			return result;
 		}
 		
-		if(!userServiceImpl.checkAccountActivationStateByUsername(username)) {
+		if(!userServiceImpl.checkAccountActivationStateByAccountInformation(carrier.getCarrierAccountInformation())) {
 			result.put("Result", "Error");
 			result.put("Reason", "Account is not activated");
 			return result;
 		}
-		
-		Carrier carrier=carrierDao.getCarrierByUsername(username);
 		
 		carrier.setCarrierState("work");
 		
@@ -216,22 +218,24 @@ public class CarrierServiceImpl {
 		return result;
 	};
 	
-	public Map<String,Object> stop(String username){
+	/* (non-Javadoc)
+	 * @see db.service.impl.CarrierService#stop(java.lang.String)
+	 */
+	@Override
+	public Map<String,Object> stop(Carrier carrier){
 		Map<String,Object> result=new HashMap<>();
 		
-		if(username==null) {
+		if(carrier==null) {
 			result.put("Result", "Error");
-			result.put("Reason", "Username is null");
+			result.put("Reason", "Carrier is null");
 			return result;
 		}
 		
-		if(!userServiceImpl.checkAccountActivationStateByUsername(username)) {
+		if(!userServiceImpl.checkAccountActivationStateByAccountInformation(carrier.getCarrierAccountInformation())) {
 			result.put("Result", "Error");
 			result.put("Reason", "Account is not activated");
 			return result;
 		}
-		
-		Carrier carrier=carrierDao.getCarrierByUsername(username);
 		
 		carrier.setCarrierState("rest");
 		
@@ -241,12 +245,16 @@ public class CarrierServiceImpl {
 		return result;
 	};
 	
-	public Map<String,Object> getAvailableOrder(String username){
+	/* (non-Javadoc)
+	 * @see db.service.impl.CarrierService#getAvailableOrder(java.lang.String)
+	 */
+	@Override
+	public Map<String,Object> getAvailableOrder(Carrier carrier){
 		Map<String,Object> result=new HashMap<>();
 		
-		if(username==null) {
+		if(carrier==null) {
 			result.put("Result", "Error");
-			result.put("Reason", "Username is null");
+			result.put("Reason", "Carrier is null");
 			return result;
 		}
 		
@@ -260,7 +268,11 @@ public class CarrierServiceImpl {
 		return result;
 	}
 	
-	public Map<String,Object> getCustomerComment(String username,String customerUsername){
+	/* (non-Javadoc)
+	 * @see db.service.impl.CarrierService#getCustomerComment(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public Map<String,Object> getCustomerComment(Carrier carrier,String customerUsername){
 		
 		
 		return null;

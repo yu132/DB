@@ -89,7 +89,7 @@ public class EmailSender {
 		}else {
 			String IPAddress=Configuration.getConfigurations("ip-address");
 			if(IPAddress!=null) {
-				link="http://"+domainName+port+"/DB/UserAction/Activate?activationCode="+activationCode;
+				link="http://"+IPAddress+port+"/DB/UserAction/Activate?activationCode="+activationCode;
 			}
 		}
 		
@@ -105,7 +105,7 @@ public class EmailSender {
 		
 			MimeMessage message=EmailSender.createMimeMessage(session, eMailAddress, username+" ”√ªß", content);
 			
-			EmailSender.sendEmail(message, session);
+			//EmailSender.sendEmail(message, session);
 			
 			return true;
 		
