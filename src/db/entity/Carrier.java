@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "carrier")
+@Table(name = "t_carrier")
 public class Carrier {
 
 	@Id

@@ -1,6 +1,5 @@
 package db.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +11,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "customer_receiving_information")
+@Table(name = "t_customer_receiving_information")
 public class CustomerReceivingInformation {
 	
 	@Id
@@ -21,7 +20,7 @@ public class CustomerReceivingInformation {
 	@Column(name = "customer_receiving_information_id")
 	private Long customerReceivingInformationID;
 	
-	@ManyToOne(cascade= {CascadeType.ALL})
+	@ManyToOne
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
 	

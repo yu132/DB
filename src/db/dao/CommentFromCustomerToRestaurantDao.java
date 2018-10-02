@@ -1,5 +1,7 @@
 package db.dao;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Repository;
@@ -21,6 +23,15 @@ public class CommentFromCustomerToRestaurantDao {
 		commentobj.setComment(comment);
 		commentobj.setPoint(point);
 		baseDao.saveOrUpdate(commentobj);
+	}
+	
+	public List<CommentFromCustomerToRestaurant> getCommentFromCustomerToRestaurantByRestaurantId(Long id){
+		return baseDao.find("select c from CommentFromCustomerToRestaurant c where c.restaurant.restaurantID=?0", new Object[] {id}, CommentFromCustomerToRestaurant.class);
+	}
+	
+	public CommentFromCustomerToRestaurant getCommentFromCustomerToRestaurantByRestaurantIdAndCustomerId(Long restaurantId,Long customerId){
+		return baseDao.get("select c from CommentFromCustomerToRestaurant c where c.restaurant.restaurantID=?0 and c.customer.customerID=?1"
+				, new Object[] {restaurantId,customerId}, CommentFromCustomerToRestaurant.class);
 	}
 	
 }

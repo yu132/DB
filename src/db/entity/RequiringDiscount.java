@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "requiring_discount")
+@Table(name = "t_requiring_discount")
 public class RequiringDiscount {
 	
 	@Id

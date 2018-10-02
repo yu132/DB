@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "customer")
+@Table(name = "t_customer")
 public class Customer {
 
 	@Id

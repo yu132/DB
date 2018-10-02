@@ -36,6 +36,12 @@ public class EmailSender {
 		return session;
 	}
 	
+	/**
+	 * 测试中暂时不发邮件
+	 * @param message
+	 * @param session
+	 * @throws MessagingException
+	 */
 	private static void sendEmail(MimeMessage message,Session session) throws MessagingException {
 		Transport transport = session.getTransport();
 		
@@ -85,11 +91,11 @@ public class EmailSender {
 		}
 		
 		if(domainName!=null) {
-			link="http://"+domainName+port+"/DB/UserAction/Activate?activationCode="+activationCode;
+			link="http://"+domainName+port+"/DB/activate.action?activationCode="+activationCode+"&username="+username;
 		}else {
 			String IPAddress=Configuration.getConfigurations("ip-address");
 			if(IPAddress!=null) {
-				link="http://"+IPAddress+port+"/DB/UserAction/Activate?activationCode="+activationCode;
+				link="http://"+IPAddress+port+"/DB/activate.action?activationCode="+activationCode+"&username="+username;
 			}
 		}
 		
@@ -105,7 +111,7 @@ public class EmailSender {
 		
 			MimeMessage message=EmailSender.createMimeMessage(session, eMailAddress, username+" 用户", content);
 			
-			//EmailSender.sendEmail(message, session);
+			EmailSender.sendEmail(message, session);
 			
 			return true;
 		

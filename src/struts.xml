@@ -6,15 +6,322 @@
 <struts>  
     <constant name="struts.action.extension" value="action" />  
       
-    <package name="add" extends="struts-default">
+    <package name="db" extends="struts-default">
     
-    	<action name="add" 
-         	class="db.test.TestAction" 
+    	<action name="login" 
+         	class="db.action.userAction.Login" 
          	method="execute">
-         	<result name="success">/success.jsp</result>
-         	<result name="error">/error.jsp</result>
+         	<result name="Carrier">carrier_main.jsp</result>
+         	<result name="Customer">customer_main.jsp</result>
+         	<result name="Restaurant">restaurant_main.jsp</result>
+         	
+         	<result name="Error">error.jsp</result>
      	</action>
-    	
+     	<action name="go_home_page" 
+         	class="db.action.userAction.GoHomePage" 
+         	method="execute">
+         	<result name="Carrier">carrier_main.jsp</result>
+         	<result name="Customer">customer_main.jsp</result>
+         	<result name="Restaurant">restaurant_main.jsp</result>
+         	
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	
+     	<action name="activate" 
+         	class="db.action.userAction.Activate" 
+         	method="execute">
+         	<result name="Success">activate_success.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	
+     	<action name="search" 
+         	class="db.action.customerAction.GetRecommendRestaurant" 
+         	method="execute">
+         	<result name="Success">near_restaurant.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="restaurant_menu" 
+         	class="db.action.customerAction.GetRestaurantMenu" 
+         	method="execute">
+         	<result name="Success">restaurant_menu.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="confirm_order" 
+         	class="db.action.customerAction.ConfirmOrder" 
+         	method="execute">
+         	<result name="Success">confirm_order.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="get_customer_receiving_information" 
+         	class="db.action.customerAction.GetCustomerReceivingInformation" 
+         	method="execute">
+         	<result name="Success">set_customer_receiving_information.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="add_customer_receiving_information" 
+         	class="db.action.customerAction.AddCustomerReceivingInformation" 
+         	method="execute">
+         	<result name="Success">add_customer_receiving_information_success.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="set_customer_receiving_information" 
+         	class="db.action.customerAction.PlaceOrder" 
+         	method="execute">
+         	<result name="Success">pay.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="to_pay" 
+         	class="db.action.customerAction.ToPay" 
+         	method="execute">
+         	<result name="Success">pay.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="pay" 
+         	class="db.action.customerAction.Pay" 
+         	method="execute">
+         	<result name="Success">pay_success.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+    	<action name="check_customer_receiving_information" 
+         	class="db.action.customerAction.GetCustomerReceivingInformation" 
+         	method="execute">
+         	<result name="Success">check_customer_receiving_information.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="delete_customer_receiving_information" 
+         	class="db.action.customerAction.DeleteCustomerReceivingInformation" 
+         	method="execute">
+         	<result name="Success">check_customer_receiving_information.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="check_order_customer" 
+         	class="db.action.customerAction.GetOrder" 
+         	method="execute">
+         	<result name="Success">check_order.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="check_order_detail_customer" 
+         	class="db.action.customerAction.GetOrderDetail" 
+         	method="execute">
+         	<result name="Success">check_order_detail.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	
+     	<action name="customer_register" 
+         	class="db.action.customerAction.Register" 
+         	method="execute">
+         	<result name="Success">register_success.jsp</result>
+         	<result name="SuccessWithError">register_success_with_error.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="restaurant_register" 
+         	class="db.action.restaurantAction.Register" 
+         	method="execute">
+         	<result name="Success">register_success.jsp</result>
+         	<result name="SuccessWithError">register_success_with_error.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="carrier_register" 
+         	class="db.action.carrierAction.Register" 
+         	method="execute">
+         	<result name="Success">register_success.jsp</result>
+         	<result name="SuccessWithError">register_success_with_error.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	
+     	<action name="check_menu" 
+         	class="db.action.restaurantAction.GetMenu" 
+         	method="execute">
+         	<result name="Success">check_menu.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="add_menu" 
+         	class="db.action.restaurantAction.AddMenu" 
+         	method="execute">
+         	<result name="Success">add_menu_success.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="delete_menu" 
+         	class="db.action.restaurantAction.DeleteMenu" 
+         	method="execute">
+         	<result name="Success" type="redirectAction">check_menu.action</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	
+     	<action name="check_order_restaurant" 
+         	class="db.action.restaurantAction.GetOrder" 
+         	method="execute">
+         	<result name="Success">check_order_restaurant.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="check_order_detail_restaurant" 
+         	class="db.action.restaurantAction.GetOrderDetail" 
+         	method="execute">
+         	<result name="Success">check_order_detail_restaurant.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	
+     	<action name="get_state_restaurant" 
+         	class="db.action.restaurantAction.GetState" 
+         	method="execute">
+         	<result name="Success">change_state_restaurant.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="open" 
+         	class="db.action.restaurantAction.Open" 
+         	method="execute">
+         	<result name="Success" type="redirectAction">get_state_restaurant.action</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="close" 
+         	class="db.action.restaurantAction.Close" 
+         	method="execute">
+         	<result name="Success" type="redirectAction">get_state_restaurant.action</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	
+     	<action name="get_information_restaurant" 
+         	class="db.action.restaurantAction.GetInformation" 
+         	method="execute">
+         	<result name="Success">change_information_restaurant.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="change_information_restaurant" 
+         	class="db.action.restaurantAction.ChangeInformation" 
+         	method="execute">
+         	<result name="Success">change_information_restaurant_success.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	
+     	<action name="check_order_carrier" 
+         	class="db.action.carrierAction.GetOrder" 
+         	method="execute">
+         	<result name="Success">check_order_carrier.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	
+     	<action name="get_available_order" 
+         	class="db.action.carrierAction.GetAvailableOrder" 
+         	method="execute">
+         	<result name="Success">get_available_order.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	
+     	<action name="take_order" 
+         	class="db.action.carrierAction.TakeOrder" 
+         	method="execute">
+         	<result name="Success">take_order_success.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	
+     	<action name="get_state_carrier" 
+         	class="db.action.carrierAction.GetState" 
+         	method="execute">
+         	<result name="Success">change_state_carrier.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="work" 
+         	class="db.action.carrierAction.Start" 
+         	method="execute">
+         	<result name="Success" type="redirectAction">get_state_carrier.action</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="rest" 
+         	class="db.action.carrierAction.Stop" 
+         	method="execute">
+         	<result name="Success" type="redirectAction">get_state_carrier.action</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	
+     	<action name="get_information_carrier" 
+         	class="db.action.carrierAction.GetInformation" 
+         	method="execute">
+         	<result name="Success">change_information_carrier.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="change_information_carrier" 
+         	class="db.action.carrierAction.ChangeInformation" 
+         	method="execute">
+         	<result name="Success">change_information_carrier_success.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	
+     	<action name="get_comment_to_restaurant" 
+         	class="db.action.customerAction.GetCommentToRestaurant" 
+         	method="execute">
+         	<result name="Success">give_comment_to_restaurant.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="get_comment_to_carrier" 
+         	class="db.action.customerAction.GetCommentToCarrier" 
+         	method="execute">
+         	<result name="Success">give_comment_to_carrier.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="get_comment_to_customer" 
+         	class="db.action.carrierAction.GetCommentToCustomer" 
+         	method="execute">
+         	<result name="Success">give_comment_to_customer.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	
+     	<action name="give_comment_to_restaurant" 
+         	class="db.action.customerAction.GiveCommentToRestaurant" 
+         	method="execute">
+         	<result name="Success">give_comment_success.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="give_comment_to_carrier" 
+         	class="db.action.customerAction.GiveCommentToCarrier" 
+         	method="execute">
+         	<result name="Success">give_comment_success.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="give_comment_to_customer" 
+         	class="db.action.carrierAction.GiveCommentToCustomer" 
+         	method="execute">
+         	<result name="Success">give_comment_success.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	
+     	<action name="get_restaurant_comment" 
+         	class="db.action.customerAction.GetRestaurantComment"
+         	method="execute">
+         	<result name="Success">get_restaurant_comment.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="get_carrier_comment" 
+         	class="db.action.customerAction.GetCarrierComment" 
+         	method="execute">
+         	<result name="Success">get_carrier_comment.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="get_customer_comment" 
+         	class="db.action.carrierAction.GetCustomerComment" 
+         	method="execute">
+         	<result name="Success">get_customer_comment.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	
+     	<action name="change_order_state_to_get_dishes" 
+         	class="db.action.carrierAction.ChangeOrderStateToGetDishes" 
+         	method="execute">
+         	<result name="Success">change_order_state_success.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	<action name="change_order_state_to_finish" 
+         	class="db.action.carrierAction.ChangeOrderStateToFinish" 
+         	method="execute">
+         	<result name="Success">change_order_state_success.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
+     	
+     	<action name="get_money" 
+         	class="db.action.userAction.GetMoney" 
+         	method="execute">
+         	<result name="Success">check_money.jsp</result>
+         	<result name="Error">error.jsp</result>
+     	</action>
     </package>
       
 </struts>

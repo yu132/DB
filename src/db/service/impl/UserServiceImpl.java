@@ -9,7 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import db.dao.AccountInformationDao;
+import db.dao.CarrierDao;
+import db.dao.CustomerDao;
+import db.dao.RestaurantDao;
 import db.entity.AccountInformation;
+import db.entity.Carrier;
+import db.entity.Customer;
+import db.entity.Restaurant;
 import db.service.UserService;
 
 @Transactional
@@ -18,9 +24,18 @@ public class UserServiceImpl implements UserService {
 	
 	@Resource
 	private	AccountInformationDao accountInformationDao;
+	
+	@Resource
+	private RestaurantDao restaurantDao;
+	
+	@Resource
+	private CustomerDao customerDao;
+	
+	@Resource
+	private CarrierDao carrierDao;
 
-	/* (non-Javadoc)
-	 * @see db.service.impl.UserService#checkAccountActivationStateByUsername(java.lang.String)
+	/**
+	 * 检查用户是否已经激活，根据用户名查找
 	 */
 	@Override
 	public boolean checkAccountActivationStateByUsername(String username) {
@@ -28,8 +43,8 @@ public class UserServiceImpl implements UserService {
 		return checkAccountActivationStateByAccountInformation(accountInformation);
 	}
 	
-	/* (non-Javadoc)
-	 * @see db.service.impl.UserService#checkAccountActivationStateByAccountInformation(db.entity.AccountInformation)
+	/**
+	 * 检查用户是否已经激活，根据账号信息查找
 	 */
 	@Override
 	public boolean checkAccountActivationStateByAccountInformation(AccountInformation accountInformation) {
@@ -40,8 +55,8 @@ public class UserServiceImpl implements UserService {
 		return false;
 	}
 	
-	/* (non-Javadoc)
-	 * @see db.service.impl.UserService#checkUsernameExist(java.lang.String)
+	/**
+	 * 检查用户知否注销或是没有登录（没用到）
 	 */
 	@Override
 	public boolean checkUsernameExist(String username) {
@@ -49,8 +64,8 @@ public class UserServiceImpl implements UserService {
 		return accountInformation!=null;
 	}
 	
-	/* (non-Javadoc)
-	 * @see db.service.impl.UserService#activateAccount(java.lang.String, java.lang.String)
+	/**
+	 * 激活账号
 	 */
 	@Override
 	public Map<String,Object> activateAccount(String username,String activationCode){
@@ -82,6 +97,116 @@ public class UserServiceImpl implements UserService {
 		return result;
 	}
 	
+	/**
+	 * 登录
+	 */
+	@Override
+	public Map<String, Object> login(String username, String password,String kind) {
+		Map<String,Object> result=new HashMap<>();
+		
+		if(username==null) {
+			result.put("Result", "Error");
+			result.put("Reason", "Username is null");
+			return result;	
+		}if(password==null) {
+			result.put("Result", "Error");
+			result.put("Reason", "Password is null");
+			return result;	
+		}if(kind==null) {
+			result.put("Result", "Error");
+			result.put("Reason", "Kind is null");
+			return result;	
+		}
+		
+		AccountInformation accountInformation;
+		
+		switch(kind) {
+		case "Carrier":
+			Carrier carrier=carrierDao.getCarrierByUsername(username);
+			
+			if(carrier==null) {
+				result.put("Result", "Error");
+				result.put("Reason", "User not exist");
+				return result;	
+			}
+			
+			accountInformation=carrier.getCarrierAccountInformation();
+			
+			result.put("Account", carrier);
+			
+			break;
+		case "Customer":
+			Customer customer=customerDao.getCustomerByUsername(username);
+			
+			if(customer==null) {
+				result.put("Result", "Error");
+				result.put("Reason", "User not exist");
+				return result;	
+			}
+			
+			accountInformation=customer.getCustomerAccountInformation();
+			
+			result.put("Account", customer);
+			
+			break;
+		case "Restaurant":
+			Restaurant restaurant=restaurantDao.getRestaurantByUsername(username);
+			
+			if(restaurant==null) {
+				result.put("Result", "Error");
+				result.put("Reason", "User not exist");
+				return result;	
+			}
+			
+			accountInformation=restaurant.getRestaurantAccountInformation();
+			
+			result.put("Account", restaurant);
+			
+			break;
+		default:
+			result.put("Result", "Error");
+			result.put("Reason", "Kind is incorect");
+			return result;	
+		}
+		
+		if(!accountInformation.getPassword().equals(password)) {
+			result.put("Result", "Error");
+			result.put("Reason", "Password is not incorrect");
+			result.remove("Account");
+			return result;	
+		}
+		
+		result.put("Result", "Success");
+		return result;
+	}
+
+	/**
+	 * 查询余额（盈利）
+	 */
+	@Override
+	public Map<String, Object> getMoney(String username) {
+		Map<String,Object> result=new HashMap<>();
+		
+		if(username==null) {
+			result.put("Result", "Error");
+			result.put("Reason", "Username is null");
+			return result;
+		}
+		
+		AccountInformation accountInformation=accountInformationDao.getAccountInformationByUsername(username);
+		
+		if(!checkAccountActivationStateByAccountInformation(accountInformation)) {
+			result.put("Result", "Error");
+			result.put("Reason", "Account is not activated");
+			return result;
+		}
+		
+		result.put("Result", "Success");
+		result.put("Money", accountInformation.getAccountBalance());
+		return result;
+	}
+
+	
 	/* (non-Javadoc)
 	 * @see db.service.impl.UserService#depositMoney()
 	 */
@@ -91,7 +216,6 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 	
-	
 	/* (non-Javadoc)
 	 * @see db.service.impl.UserService#WithdrawMoney()
 	 */
@@ -100,5 +224,4 @@ public class UserServiceImpl implements UserService {
 		
 		return null;
 	}
-	
 }

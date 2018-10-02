@@ -8,21 +8,21 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "order")
+@Table(name = "t_order")
 public class Order {
 	
 	@Id
 	@GenericGenerator(name = "generator", strategy = "native")
 	@GeneratedValue(generator = "generator")
 	@Column(name = "order_id")
-	private Integer orderID;
+	private Long orderID;
 	
 	@Column(name = "order_time")
 	private Long orderTime;
@@ -33,6 +33,9 @@ public class Order {
 	
 	@Column(name = "orde_price")
 	private Double orderPrice;
+	
+	@Column(name = "carrier_money")
+	private Double carrierMoney;
 	
 	@ManyToOne
 	@JoinColumn(name = "restaurant_id")
@@ -46,11 +49,14 @@ public class Order {
 	@JoinColumn(name = "carrier_id")
 	private Carrier carrier;
 	
+	/**
+	 * need pay, need carrier, to restaurant , get dishes, finish
+	 */
 	@Column(name = "order_state",length=20)
 	private String orderState;
 	
-	@ManyToMany(cascade = {CascadeType.ALL})
-	private List<Menu> dishes;
+	@OneToMany(cascade = {CascadeType.ALL})
+	private List<MenuOrder> dishes;
 
 	public String getOrderState() {
 		return orderState;
@@ -60,11 +66,11 @@ public class Order {
 		this.orderState = orderState;
 	}
 
-	public Integer getOrderID() {
+	public Long getOrderID() {
 		return orderID;
 	}
 
-	public void setOrderID(Integer orderID) {
+	public void setOrderID(Long orderID) {
 		this.orderID = orderID;
 	}
 
@@ -116,14 +122,20 @@ public class Order {
 		this.carrier = carrier;
 	}
 
-	public List<Menu> getDishes() {
+	public List<MenuOrder> getDishes() {
 		return dishes;
 	}
 
-	public void setDishes(List<Menu> dishes) {
+	public void setDishes(List<MenuOrder> dishes) {
 		this.dishes = dishes;
 	}
-	
-	
+
+	public Double getCarrierMoney() {
+		return carrierMoney;
+	}
+
+	public void setCarrierMoney(Double carrierMoney) {
+		this.carrierMoney = carrierMoney;
+	}
 	
 }

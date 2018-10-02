@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns="http://java.sun.com/xml/ns/javaee" 
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
+id="WebApp_ID" version="2.5">
   <display-name>S2SH</display-name>
-  <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
-  </welcome-file-list>
+
   
   <!-- 添加对spring的支持 -->  
   <context-param>  
@@ -46,4 +47,51 @@
     <filter-name>openSessionInViewFilter</filter-name>  
     <url-pattern>*.action</url-pattern>  
   </filter-mapping>  
+  
+  
+    <welcome-file-list>
+    <welcome-file>login.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <error-page> 
+    <error-code>404</error-code> 
+    	<location>/404.jsp</location> 
+	</error-page>
+  
+    <jsp-config>
+    <taglib>
+    <taglib-uri>http://java.sun.com/jstl/fmt</taglib-uri>
+    <taglib-location>/WEB-INF/fmt.tld</taglib-location>
+    </taglib>
+    <taglib>
+    <taglib-uri>http://java.sun.com/jstl/fmt-rt</taglib-uri>
+    <taglib-location>/WEB-INF/fmt-rt.tld</taglib-location>
+    </taglib>
+    <taglib>
+    <taglib-uri>http://java.sun.com/jstl/core</taglib-uri>
+    <taglib-location>/WEB-INF/c.tld</taglib-location>
+    </taglib>
+    <taglib>
+    <taglib-uri>http://java.sun.com/jstl/core-rt</taglib-uri>
+    <taglib-location>/WEB-INF/c-rt.tld</taglib-location>
+    </taglib>
+    <taglib>
+    <taglib-uri>http://java.sun.com/jstl/sql</taglib-uri>
+    <taglib-location>/WEB-INF/sql.tld</taglib-location>
+    </taglib>
+    <taglib>
+    <taglib-uri>http://java.sun.com/jstl/sql-rt</taglib-uri>
+    <taglib-location>/WEB-INF/sql-rt.tld</taglib-location>
+    </taglib>
+    <taglib>
+    <taglib-uri>http://java.sun.com/jstl/x</taglib-uri>
+    <taglib-location>/WEB-INF/x.tld</taglib-location>
+    </taglib>
+    <taglib>
+    <taglib-uri>http://java.sun.com/jstl/x-rt</taglib-uri>
+    <taglib-location>/WEB-INF/x-rt.tld</taglib-location>
+    </taglib>
+    </jsp-config>
+
+  
 </web-app>

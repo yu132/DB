@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "comment_from_customer_to_carrier")
+@Table(name = "t_comment_from_customer_to_carrier")
 public class CommentFromCustomerToCarrier implements Serializable{
 
 	private static final long serialVersionUID = 1L;

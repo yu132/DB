@@ -22,5 +22,8 @@ public interface UserService {
 	Map<String, Object> depositMoney();
 
 	Map<String, Object> WithdrawMoney();
-
+	
+	Map<String, Object> login(String username,String password,String kind);
+	
+	Map<String, Object> getMoney(String username);
 }

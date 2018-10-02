@@ -16,6 +16,10 @@ public class CustomerDao {
 		return baseDao.get("select c from Customer c where c.customerAccountInformation.username=?0", new Object[] {username}, Customer.class);
 	}
 	
+	public Customer getCustomerById(Long id) {
+		return baseDao.get(Customer.class, id);
+	}
+	
 	public void saveCustomer(Customer customer) {
 		baseDao.save(customer);
 	}

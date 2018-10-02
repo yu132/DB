@@ -2,30 +2,41 @@ package db.service;
 
 import java.util.Map;
 
+import db.entity.Restaurant;
+
 public interface RestaurantService {
 
-	Map<String, Object> addMenu(String username, String menuName, Double menuPrice, Double menuDiscount);
+	Map<String, Object> addMenu(Restaurant restaurant, String menuName, Double menuPrice, Double menuDiscount);
 
-	Map<String, Object> deleteMenu(String username, Long menuID);
+	Map<String, Object> deleteMenu(Restaurant restaurant, Long menuID);
 
-	Map<String, Object> addVoucherActicity(String username, Double needPay, Double discountMoney, Double needToUse,
+	Map<String, Object> addVoucherActicity(Restaurant restaurant, Double needPay, Double discountMoney, Double needToUse,
 			Long validTime);
 
-	Map<String, Object> deleteVoucherActicity(String username, Long voucherActicityID);
+	Map<String, Object> deleteVoucherActicity(Restaurant restaurant, Long voucherActicityID);
 
-	Map<String, Object> open(String username);
+	Map<String, Object> open(Restaurant restaurant);
 
-	Map<String, Object> close(String username);
+	Map<String, Object> close(Restaurant restaurant);
 
-	Map<String, Object> getOrder(String username);
-
-	Map<String, Object> GiveCommentToCustomer(String username, String customerUsername, String comment, Integer point);
+	Map<String, Object> GiveCommentToCustomer(Restaurant restaurant, String customerUsername, String comment, Integer point);
 
 	Map<String, Object> register(String restaurantName, String restaurantAddress, String restaurantPhone,
 			String username, String password, String nickname, String eMailAddress);
 
-	Map<String, Object> setRequiringDiscount(String username, Double requiringMoney, Double discountMoney);
+	Map<String, Object> setRequiringDiscount(Restaurant restaurant, Double requiringMoney, Double discountMoney);
 
-	Map<String, Object> deleteRequiringDiscount(String username, Long requiringDiscountID);
-
+	Map<String, Object> deleteRequiringDiscount(Restaurant restaurant, Long requiringDiscountID);
+	
+	Map<String, Object> getMenu(Restaurant restaurant);
+	
+	Map<String, Object> getOrder(Restaurant restaurant);
+	
+	Map<String, Object> getOrderDetail(Restaurant restaurant,Long orderId);
+	
+	Map<String, Object> getState(Restaurant restaurant);
+	
+	Map<String, Object> changeInformation(Restaurant restaurant,String restaurantName,String restaurantAddress,String restaurantPhone);
+	
+	Map<String, Object> getInformation(Restaurant restaurant);
 }

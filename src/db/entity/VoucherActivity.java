@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "voucher_activity")
+@Table(name = "t_voucher_activity")
 public class VoucherActivity {
 
 	@Id

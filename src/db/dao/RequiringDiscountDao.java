@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import db.entity.RequiringDiscount;
 
-@Repository("orderDao")
+@Repository("requiringDiscountDao")
 public class RequiringDiscountDao {
 
 	@Resource

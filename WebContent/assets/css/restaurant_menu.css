@@ -1,0 +1,10 @@
+@charset "UTF-8";
+
+.am-form input[type=input]{
+}
+
+.am-form input[type=submit]{
+	width: 20%;
+	line-height: 3.0;
+}
+

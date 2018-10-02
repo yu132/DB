@@ -3,6 +3,6 @@
 
 <configuration>
 
-	<ip-address>192.168.1.0</ip-address>
+	<ip-address>localhost</ip-address>
 
 </configuration>

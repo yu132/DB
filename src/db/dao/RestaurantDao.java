@@ -35,4 +35,8 @@ public class RestaurantDao {
 		return baseDao.get("select r from Restaurant r where r.restaurantAccountInformation.username=?0", new Object[] {username}, Restaurant.class);
 	}
 	
+	public List<Restaurant> getRestaurantByRange(long begin,long end){
+		return baseDao.find("select r from Restaurant r where r.restaurantID>=?0 and r.restaurantID<=?1", new Object[] {begin,end},Restaurant.class);
+	}
+	
 }
